@@ -2,10 +2,9 @@
   align-self: center;
   text-align: center;
   height:100%;
-  width: 420px;
+  width: 359px;
+  margin: auto;
 }
-
-
 
 .content-wrapper {
   display: flex;
@@ -20,5 +19,62 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
+}
+
+.from {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-content: space-evenly
+}
+
+.to {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-content: space-evenly;
+}
+
+.card {
+  background: #fff;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  border-radius: 2px;
+  display: inline-block;
+  height: 100px;
+  margin: 1rem;
+  position: relative;
+  width: 360px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.uber-logo {
+  width: 150px;
+  height: 100px;
+}
+
+.lyft-logo {
+  width: 125px;
+  height: 100px;
+}
+
+.taxi-logo {
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 150px;
+  height: 80px;
+}
+
+.autocomplete-dropdown-container {
+  width: 300px;
+  overflow: clip;
+}
+
+.location-search-input {
+  width: 300px;
 }
