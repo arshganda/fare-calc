@@ -2,14 +2,13 @@
   align-self: center;
   text-align: center;
   height:100%;
-  width: 359px;
+  width: 100%;
   margin: auto;
 }
 
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   height: 100%;
 }
@@ -17,7 +16,6 @@
 .App-header {
   display: flex;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: black;
 }
@@ -26,7 +24,8 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  align-content: space-evenly
+  align-content: space-evenly;
+  margin-bottom: 20px;
 }
 
 .to {
@@ -36,9 +35,80 @@
   align-content: space-evenly;
 }
 
+.search-container {
+  width: 100%;
+}
+
+.search-result-item {
+  width: 90%;
+  height: 64px;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+}
+
+.search-result-item-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.search-result-item-text {
+  margin-top: 9px;
+  text-align: left;
+  line-height: 1.4;
+  font-family: 'Circular Std Book';
+}
+
+.main-text {
+  font-family: 'Circular Std';
+}
+
+.secondary-text {
+  color: #c5c5c5;
+}
+
+.autocomplete-dropdown-container {
+  width: 90%;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #c4c4c4;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #c4c4c4;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #c4c4c4;
+}
+
+.location-search-input {
+  width: 90%;
+  height: 48px;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  font-family: 'Circular Std Book';
+  font-size: 16px;
+  padding-left: 12px;
+}
+
+.place {
+  margin: 16px;
+  width: 30px;
+  height: 30px;
+  background: #000000;
+  background-image: url('baseline_place_white_18dp.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+}
+
 .card {
   background: #fff;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.19), 2px 2px 0px 2px rgba(0,0,0,0.15);
   border-radius: 2px;
   display: inline-block;
   height: 100px;
@@ -70,11 +140,3 @@
   height: 80px;
 }
 
-.autocomplete-dropdown-container {
-  width: 300px;
-  overflow: clip;
-}
-
-.location-search-input {
-  width: 300px;
-}
