@@ -14,6 +14,10 @@
     font-style: normal;
 }
 
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
     background-color: #f2f2f2;
 
@@ -27,6 +31,7 @@ body {
 }
 
 html {
+  box-sizing: border-box;
   height: 100%;
 }
 

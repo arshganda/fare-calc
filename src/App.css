@@ -20,37 +20,75 @@
   color: black;
 }
 
+.where-to {
+  float: left;
+  margin-left: 5%;
+  font-size: 24px;
+  color: #45406a;
+  margin-bottom: 8px;
+}
+
 .from {
-  display: flex;
-  flex-direction: row;
   width: 100%;
-  align-content: space-evenly;
-  margin-bottom: 20px;
+}
+
+.search-result-item-content:last-child {
+  margin-bottom: 8px;
 }
 
 .to {
-  display: flex;
-  flex-direction: row;
   width: 100%;
-  align-content: space-evenly;
 }
 
 .search-container {
   width: 100%;
 }
 
-.search-result-item {
+.options-container {
+  width: 100%;
+}
+
+.search-result-item-content {
+  display: inline-flex;
   width: 90%;
   height: 64px;
   background: #ffffff;
   border: 1px solid #e5e5e5;
   border-radius: 5px;
+  margin-bottom: 4px;
 }
 
-.search-result-item-content {
-  display: flex;
-  flex-direction: row;
+.option-card {
+  display: inline-flex;
+  width: 90%;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  margin-bottom: 24px;
 }
+
+.option-card i {
+  margin-left: auto;
+  margin-right: 16px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.option-text {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  font-size: 20px;
+  margin: 8px;
+  line-height: 1.4;
+}
+
+.breakdown {
+  font-family: 'Circular Std Book';
+  font-size: 14px;
+
+}
+
 
 .search-result-item-text {
   margin-top: 9px;
@@ -63,12 +101,13 @@
   font-family: 'Circular Std';
 }
 
-.secondary-text {
-  color: #c5c5c5;
+.non-bold-main-text {
+  font-family: 'Circular Std Book';
 }
 
-.autocomplete-dropdown-container {
-  width: 90%;
+.secondary-text {
+  font-family: 'Circular Std Book';
+  color: #c5c5c5;
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -93,6 +132,8 @@
   font-family: 'Circular Std Book';
   font-size: 16px;
   padding-left: 12px;
+  padding-right: 12px;
+  margin-bottom: 8px;
 }
 
 .place {
@@ -106,37 +147,37 @@
   border-radius: 50%;
 }
 
-.card {
-  background: #fff;
-  box-shadow: 0 2px 40px rgba(0,0,0,0.19), 2px 2px 0px 2px rgba(0,0,0,0.15);
-  border-radius: 2px;
-  display: inline-block;
-  height: 100px;
-  margin: 1rem;
-  position: relative;
-  width: 360px;
-}
-
-.card-content {
+.dist-time {
   display: flex;
-  flex-direction: row;
-  width: 100%;
+  width: 90%;
+  justify-content: space-evenly;
+  margin: auto;
+
 }
 
-.uber-logo {
-  width: 150px;
-  height: 100px;
+.material-icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 24px;
 }
 
-.lyft-logo {
-  width: 125px;
-  height: 100px;
+.dist {
+  display: inline-flex;
 }
 
-.taxi-logo {
-  margin-top: 10px;
-  margin-left: 10px;
-  width: 150px;
-  height: 80px;
+.label-header {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #c5c5c5;
+  font-family: 'Circular Std Book';
+}
+
+.dist-text {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.4;
+  padding-left: 8px;
 }
 
