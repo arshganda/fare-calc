@@ -1,3 +1,7 @@
+## [FareCompare](https://farecompare.io)
+
+This website provides fare estimates of transit options such as Uber, Lyft and taxi in the Lower Mainland).
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
