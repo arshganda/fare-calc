@@ -24,14 +24,14 @@ class OptionCard extends React.Component {
     render() {
 
         return (
-            <a href="http://google.ca" target="_blank" className="option-card">
+            <a href="https://m.uber.com/ul/?client_id=oJnri9OfGiSfI9MnvbUfBce8g37hcdaf" target="_blank" className="option-card">
 
-                    <img src={this.props.logo} height={"70px"} width={"100px"}></img>
-                    <div className="option-text">
-                        ${this.props.price}{(this.props.mode === "uber" || this.props.mode === "lyft") ? "*" : ""}
-                    </div>
-                    <i class="material-icons">
-                        chevron_right
+                <img src={this.props.logo} height={"70px"} width={"100px"}></img>
+                <div className="option-text">
+                    ${this.props.price}{(this.props.mode === "uber" || this.props.mode === "lyft") ? "*" : ""}
+                </div>
+                <i class="material-icons">
+                    chevron_right
               </i>
 
             </a >

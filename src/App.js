@@ -44,8 +44,15 @@ class App extends React.Component {
     ReactGA.event({
       category: "Search",
       action: "Selected pick up location",
-      value: origin
+      label: origin
     });
+    geocodeByAddress(origin)
+      .then(results => getLatLng(results[0]))
+      .then(({ lat, lng }) => {
+        console.log(lat + "  " + lng);
+        this.setState({ originLat: lat, originLong: lng });
+      }
+      );
     this.setState({ origin });
     this.ref1.current.blur();
   };
@@ -58,7 +65,7 @@ class App extends React.Component {
     ReactGA.event({
       category: "Search",
       action: "Selected drop off location",
-      value: destination
+      label: destination
     });
     this.doThis(destination);
     this.ref2.current.blur();
@@ -67,8 +74,16 @@ class App extends React.Component {
 
 
   doThis = async (destination) => {
+    this.setState({ destination });
     let service = new window.google.maps.DistanceMatrixService();
-    let response = await service.getDistanceMatrix({
+    geocodeByAddress(destination)
+      .then(results => getLatLng(results[0]))
+      .then(({ lat, lng }) => {
+        console.log(lat + "  " + lng);
+        this.setState({ destLat: lat, destLng: lng });
+      }
+      );
+    service.getDistanceMatrix({
       origins: [this.state.origin],
       destinations: [destination],
       travelMode: 'DRIVING',
@@ -82,7 +97,7 @@ class App extends React.Component {
       let duration = response.rows[0].elements[0].duration_in_traffic['text'];
       let durationSecs = response.rows[0].elements[0].duration_in_traffic['value'];
       let showOptions = true;
-      this.setState({ destination, distance, distanceMeters, duration, durationSecs, showOptions });
+      this.setState({ distance, distanceMeters, duration, durationSecs, showOptions });
     }.bind(this));
   }
 
@@ -205,7 +220,7 @@ class App extends React.Component {
 
         <div className={this.state.showOptions ? "options-container" : "options-container hidden"}>
           <div className="options-title">
-          Request a Ride
+            Request a Ride
           </div>
           <OptionCard
             logo={uber}
