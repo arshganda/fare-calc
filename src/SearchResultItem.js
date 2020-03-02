@@ -15,10 +15,12 @@ class SearchResultItem extends React.Component {
         return (
             <div className="search-result-item-content">
                 <div className="place"></div>
-                <div className="search-result-item-text">
-                    <span className="main-text">{matchedText}</span>
-                    <span className="non-bold-main-text">{remainingText}</span> <br />
-                    <span className="secondary-text">{this.props.text.secondaryText}</span>
+                <div className="search-result-item-text text-clip">
+                    <div className="text-header text-clip">
+                        <span className="main-text" >{matchedText}</span>
+                        <span className="non-bold-main-text text-clip">{remainingText}</span> <br />
+                    </div>
+                    <span className="secondary-text text-clip">{this.props.text.secondaryText}</span>
                 </div>
             </div>
         );

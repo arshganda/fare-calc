@@ -4,6 +4,10 @@ import SearchResultItem from './SearchResultItem';
 
 class LocationSearchInput extends React.Component {
 
+    onBlur = () => {
+        console.log("YEET");
+    }
+
     render() {
         const searchOptions = {
             bounds: new window.google.maps.LatLngBounds(
@@ -26,7 +30,9 @@ class LocationSearchInput extends React.Component {
                         <input value={this.props.value}
                             {...getInputProps({
                                 placeholder: this.props.placeholderText,
-
+                                ref: this.props.reference,
+                                onFocus: this.props.onFocus,
+                                onBlur: this.onBlur,
                                 className: 'location-search-input',
                             })}
                         />

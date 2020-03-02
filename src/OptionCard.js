@@ -27,12 +27,12 @@ class OptionCard extends React.Component {
             <div className="option-card">
                 <img src={this.props.logo} height={"70px"} width={"100px"}></img>
                 <div className="option-text">
-                    ${this.props.price}
-                    {/* <span className="breakdown">{this.priceBreakdown(this.props.mode)}</span> */}
+                    ${this.props.price}{(this.props.mode === "uber" || this.props.mode === "lyft") ? "*" : ""}
                 </div>
+                {/* <span>Request a ride</span>
                 <i class="material-icons">
-                    expand_more
-              </i>
+                    chevron_right
+              </i> */}
             </div>
         );
     }

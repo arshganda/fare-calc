@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactGA from "react-ga";
 import './App.css';
 import LocationSearchInput from './LocationSearchInput.js';
 import OptionCard from './OptionCard.js';
@@ -7,7 +8,7 @@ import {
   getLatLng,
 } from 'react-places-autocomplete';
 import uber from './Uber_Logo_Black_RGB.svg';
-import lyft from './Lyft logo – pink – rgb.svg';
+import lyft from './Lyft_logo.svg';
 import taxi from './taxi.svg';
 import orderACar from './undraw_order_a_car_3tww.svg';
 import comingHome from './undraw_coming_home_52ir.svg';
@@ -17,6 +18,8 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
+    this.ref1 = React.createRef();
+    this.ref2 = React.createRef();
     this.state = {
       origin: '',
       destination: '',
@@ -24,7 +27,13 @@ class App extends React.Component {
       duration: '-',
       durationSecs: '',
       distanceMeters: '',
+      showOptions: false,
     }
+  }
+
+  componentDidMount = () => {
+    ReactGA.initialize('UA-153222403-1');
+    ReactGA.pageview('/home');
   }
 
   handleOriginChange = origin => {
@@ -32,7 +41,13 @@ class App extends React.Component {
   }
 
   updateOrigin = origin => {
+    ReactGA.event({
+      category: "Search",
+      action: "Selected pick up location",
+      value: origin
+    });
     this.setState({ origin });
+    this.ref1.current.blur();
   };
 
   handleDestinationChange = destination => {
@@ -40,7 +55,14 @@ class App extends React.Component {
   }
 
   updateDestination = destination => {
+    ReactGA.event({
+      category: "Search",
+      action: "Selected drop off location",
+      value: destination
+    });
     this.doThis(destination);
+    this.ref2.current.blur();
+
   };
 
 
@@ -59,7 +81,8 @@ class App extends React.Component {
       let distanceMeters = response.rows[0].elements[0].distance['value'];
       let duration = response.rows[0].elements[0].duration_in_traffic['text'];
       let durationSecs = response.rows[0].elements[0].duration_in_traffic['value'];
-      this.setState({ destination, distance, distanceMeters, duration, durationSecs });
+      let showOptions = true;
+      this.setState({ destination, distance, distanceMeters, duration, durationSecs, showOptions });
     }.bind(this));
   }
 
@@ -107,34 +130,47 @@ class App extends React.Component {
     }
   }
 
+  handleScroll = () => {
+    // scroller.scrollTo('search', {
+    //   duration: 500,
+    //   delay: 25,
+    //   smooth: true,
+    //   offset: -16, // Scrolls to element + 50 pixels down the page
+    // });
+  }
+
   render() {
 
     return (
       <div className="App">
-        <div className="content-wrapper">
-          <header className="App-header">
-            <h2>Fare Calculator</h2>
-          </header>
-          <img src={orderACar} height={"50%"} width={"85%"}></img>
+        <div className="header">
+          <span id="title">FareCompare</span>
+          <span id="sub">Price estimates of transit options in British Columbia</span>
+        </div>
+        <img src={orderACar} className="main-img"></img>
 
-          <div className="search-container">
-            <span className="where-to">Where to?</span>
-            <LocationSearchInput
-              value={this.state.origin}
-              className="from"
-              placeholderText="Pick Up"
-              handleChange={this.handleOriginChange}
-              handleSelect={this.updateOrigin}
-            />
-            <LocationSearchInput
-              value={this.state.destination}
-              className="to"
-              placeholderText="Drop Off"
-              handleChange={this.handleDestinationChange}
-              handleSelect={this.updateDestination}
-            />
-          </div>
-
+        <div className="search-container">
+          <Element name="search" id="search">
+            <span className="where-to" id="where">Where to?</span>
+          </Element>
+          <LocationSearchInput
+            value={this.state.origin}
+            reference={this.ref1}
+            className="from"
+            placeholderText="Pick Up"
+            handleChange={this.handleOriginChange}
+            handleSelect={this.updateOrigin.bind(this)}
+            onFocus={this.handleScroll}
+          />
+          <LocationSearchInput
+            value={this.state.destination}
+            reference={this.ref2}
+            className="to"
+            placeholderText="Drop Off"
+            handleChange={this.handleDestinationChange}
+            handleSelect={this.updateDestination}
+            onFocus={this.handleScroll}
+          />
           <div className="dist-time">
             <div className="dist">
               <i class="material-icons">
@@ -156,46 +192,30 @@ class App extends React.Component {
               </div>
             </div>
           </div>
-
-          <div className="options-container">
-            <span className="where-to">Your Options</span>
-            <OptionCard
-              logo={uber}
-              mode="uber"
-              price={this.calculatePrice("uber", this.state.distanceMeters, this.state.durationSecs)} />
-            <OptionCard
-              logo={lyft}
-              mode="lyft"
-              price={this.calculatePrice("lyft", this.state.distanceMeters, this.state.durationSecs)} />
-            <OptionCard
-              logo={taxi}
-              mode="taxi"
-              price={this.calculatePrice("taxi", this.state.distanceMeters, this.state.durationSecs)} />
-          </div>
-
-          <img src={comingHome} height={"50%"} width={"85%"}></img>
-
-
-
-          {/* <div className="card">
-            <div className="card-content">
-              <img src={uber} alt="Uber" className="uber-logo"></img>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card-content">
-              <img src={lyft} alt="Lyft" className="lyft-logo"></img>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card-content">
-              <img src={taxi} alt="Taxi" className="taxi-logo"></img>
-            </div>
-          </div> */}
-
-
         </div>
-      </div >
+
+
+
+        <div className={this.state.showOptions ? "options-container" : "options-container hidden"}>
+          <span className="where-to">Your Options</span>
+          <OptionCard
+            logo={uber}
+            mode="uber"
+            price={this.calculatePrice("uber", this.state.distanceMeters, this.state.durationSecs)} />
+          <OptionCard
+            logo={lyft}
+            mode="lyft"
+            price={this.calculatePrice("lyft", this.state.distanceMeters, this.state.durationSecs)} />
+          <OptionCard
+            logo={taxi}
+            mode="taxi"
+            price={this.calculatePrice("taxi", this.state.distanceMeters, this.state.durationSecs)} />
+          <span className="disclaimer">*Estimates do not include current surge pricing.</span>
+        </div>
+
+        <img src={comingHome} className={this.state.showOptions ? "second-img hidden" : "second-img"}></img>
+
+      </div>
     );
   }
 }
