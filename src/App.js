@@ -153,24 +153,31 @@ class App extends React.Component {
           <Element name="search" id="search">
             <span className="where-to" id="where">Where to?</span>
           </Element>
-          <LocationSearchInput
-            value={this.state.origin}
-            reference={this.ref1}
-            className="from"
-            placeholderText="Pick Up"
-            handleChange={this.handleOriginChange}
-            handleSelect={this.updateOrigin.bind(this)}
-            onFocus={this.handleScroll}
-          />
-          <LocationSearchInput
-            value={this.state.destination}
-            reference={this.ref2}
-            className="to"
-            placeholderText="Drop Off"
-            handleChange={this.handleDestinationChange}
-            handleSelect={this.updateDestination}
-            onFocus={this.handleScroll}
-          />
+          <div style={{ 'display': 'flex', 'width': '90%' }}>
+            <div style={{ 'display': 'flex', 'flex-direction': 'column', 'max-width': '90%', 'min-width': '90%' }}>
+              <LocationSearchInput
+                value={this.state.origin}
+                reference={this.ref1}
+                className="from"
+                placeholderText="Pick Up"
+                handleChange={this.handleOriginChange}
+                handleSelect={this.updateOrigin.bind(this)}
+                onFocus={this.handleScroll}
+              />
+              <LocationSearchInput
+                value={this.state.destination}
+                reference={this.ref2}
+                className="to"
+                placeholderText="Drop Off"
+                handleChange={this.handleDestinationChange}
+                handleSelect={this.updateDestination}
+                onFocus={this.handleScroll}
+              />
+            </div>
+            <i class="material-icons" id="swap">
+              swap_vert
+          </i>
+          </div>
           <div className="dist-time">
             <div className="dist">
               <i class="material-icons">
@@ -197,7 +204,9 @@ class App extends React.Component {
 
 
         <div className={this.state.showOptions ? "options-container" : "options-container hidden"}>
-          <span className="where-to">Your Options</span>
+          <div className="options-title">
+          Request a Ride
+          </div>
           <OptionCard
             logo={uber}
             mode="uber"
@@ -215,7 +224,7 @@ class App extends React.Component {
 
         <img src={comingHome} className={this.state.showOptions ? "second-img hidden" : "second-img"}></img>
 
-      </div>
+      </div >
     );
   }
 }

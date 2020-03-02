@@ -39,11 +39,14 @@
 .options-container {
   width: 100%;
   height: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .search-result-item-content {
   display: inline-flex;
-  width: 90%;
+  width: 100%;
   height: 64px;
   background: #ffffff;
   border: 1px solid #e5e5e5;
@@ -61,6 +64,7 @@
 
 .option-card {
   display: inline-flex;
+  text-decoration: none;
   width: 90%;
   background: #ffffff;
   border: 1px solid #e5e5e5;
@@ -141,8 +145,10 @@
   color: #c4c4c4;
 }
 
+
+
 .location-search-input {
-  width: 90%;
+  width: 100%;
   height: 48px;
   background: #ffffff;
   border: 1px solid #e5e5e5;
@@ -189,6 +195,20 @@
   border-radius: 50%;
 }
 
+#swap {
+  font-size: 30px;
+  padding-left: 3%;
+}
+
+.options-title {
+  display: inline-block;
+  align-self: baseline;
+  margin-left: 5%;
+  margin-bottom: 8px;
+  font-size: 1.5em;
+  color: #000;
+}
+
 .dist-time {
   display: flex;
   width: 90%;
@@ -230,6 +250,10 @@
 
 .hidden {
   display: none;
+}
+
+a  {
+  color: #000;
 }
 
 @media only screen and (min-height: 668px) {
