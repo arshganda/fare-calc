@@ -154,6 +154,13 @@ class App extends React.Component {
     // });
   }
 
+  swapAddresses = () => {
+    this.setState({
+      origin: this.state.destination,
+    });
+    this.doThis(this.state.origin);
+  }
+
   render() {
 
     return (
@@ -189,9 +196,9 @@ class App extends React.Component {
                 onFocus={this.handleScroll}
               />
             </div>
-            <i class="material-icons" id="swap">
+            <i class="material-icons" id="swap" onClick={this.swapAddresses}>
               swap_vert
-          </i>
+            </i>
           </div>
           <div className="dist-time">
             <div className="dist">
