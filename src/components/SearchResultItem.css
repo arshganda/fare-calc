@@ -54,6 +54,5 @@
 
 .text-clip {
   overflow: hidden;
-  white-space: pre;
   text-overflow: ellipsis;
 }

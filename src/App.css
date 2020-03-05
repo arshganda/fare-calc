@@ -59,8 +59,7 @@
 .search-input-col {
   display: flex;
   flex-direction: column;
-  max-width: 90%;
-  min-width: 90%;
+  width: 100%;
   padding-right: 2.5%;
 }
 

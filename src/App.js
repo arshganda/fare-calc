@@ -249,16 +249,22 @@ class App extends React.Component {
           />
           <OptionCard
             logo={lyft}
+            pickupLat={this.state.originLat}
+            pickupLong={this.state.originLong}
+            dropoffLat={this.state.destLat}
+            dropoffLong={this.state.destLng}
             mode="lyft"
             price={this.calculatePrice("lyft", this.state.distanceMeters, this.state.durationSecs)} />
           <OptionCard
             logo={taxi}
             mode="taxi"
             price={this.calculatePrice("taxi", this.state.distanceMeters, this.state.durationSecs)} />
-          <span className="disclaimer">*Estimates do not include current surge pricing.</span>
+          <span className="disclaimer">
+            *Estimates do not include current surge pricing.
+          </span>
         </div>
 
-        <img src={comingHome} className={this.state.showOptions ? "second-img hidden" : "second-img"}></img>
+        <img src={comingHome} className={this.state.showOptions ? "second-img hidden" : "second-img"} />
 
       </div >
     );
