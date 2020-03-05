@@ -51,6 +51,7 @@ class App extends React.Component {
         this.setState({ originLat: lat, originLong: lng });
       });
     this.ref1.current.blur();
+    if (this.state.destination !== '') this.getDistTimeReg(origin);
     this.setState({ origin });
   };
 
@@ -64,21 +65,21 @@ class App extends React.Component {
       action: "Selected drop off location",
       label: destination
     });
-    this.doThis(destination);
-    this.ref2.current.blur();
-
-  };
-
-
-  doThis = async (destination) => {
-    this.setState({ destination });
-    let service = new window.google.maps.DistanceMatrixService();
     geocodeByAddress(destination)
       .then(results => getLatLng(results[0]))
       .then(({ lat, lng }) => {
         console.log(lat + "  " + lng);
         this.setState({ destLat: lat, destLng: lng });
       });
+    this.ref2.current.blur();
+    if (this.state.origin !== '') this.doThis(destination);
+    this.setState({ destination });
+  };
+
+
+  doThis = async (destination) => {
+    let service = new window.google.maps.DistanceMatrixService();
+
     service.getDistanceMatrix({
       origins: [this.state.origin],
       destinations: [destination],
@@ -151,14 +152,19 @@ class App extends React.Component {
   }
 
   swapAddresses = () => {
+    this.getDistTimeSwap();
+    this.setState({
+      destination: this.state.origin,
+      origin: this.state.destination,
+      originLat: this.state.destLat,
+      originLong: this.state.destLng,
+      destLat: this.state.originLat,
+      destLng: this.state.originLong
+    });
+  }
+
+  getDistTimeSwap = () => {
     let service = new window.google.maps.DistanceMatrixService();
-    // geocodeByAddress(destination)
-    //   .then(results => getLatLng(results[0]))
-    //   .then(({ lat, lng }) => {
-    //     console.log(lat + "  " + lng);
-    //     this.setState({ destLat: lat, destLng: lng });
-    //   }
-    //   );
     service.getDistanceMatrix({
       origins: [this.state.destination],
       destinations: [this.state.origin],
@@ -176,7 +182,27 @@ class App extends React.Component {
       let showOptions = true;
       this.setState({ distance, distanceMeters, duration, durationSecs, showOptions });
     }.bind(this));
-    this.setState({ destination: this.state.origin, origin: this.state.destination });
+  }
+
+  getDistTimeReg = (origin) => {
+    let service = new window.google.maps.DistanceMatrixService();
+    service.getDistanceMatrix({
+      origins: [origin],
+      destinations: [this.state.destination],
+      travelMode: 'DRIVING',
+      drivingOptions: {
+        departureTime: new Date(Date.now()),  // for the time N milliseconds from now.
+        trafficModel: 'bestguess'
+      }
+    }, function (response, status) {
+      // Assuming response structure doesn't change
+      let distance = response.rows[0].elements[0].distance['text'];
+      let distanceMeters = response.rows[0].elements[0].distance['value'];
+      let duration = response.rows[0].elements[0].duration_in_traffic['text'];
+      let durationSecs = response.rows[0].elements[0].duration_in_traffic['value'];
+      let showOptions = true;
+      this.setState({ distance, distanceMeters, duration, durationSecs, showOptions });
+    }.bind(this));
   }
 
   render() {
