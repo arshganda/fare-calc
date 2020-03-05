@@ -20,22 +20,22 @@ const OptionCard = (props) => {
                 return `https://lyft.com/ride?id=lyft&pickup[latitude]=${props.pickupLat}&pickup[longitude]=${props.pickupLong}&partner=${clientId}&destination[latitude]=${props.dropoffLat}&destination[longitude]=${props.dropoffLong}`;
                 break;
             case 'taxi':
-                return '';
+                return 'tel: +1604-681-1111';
             default:
                 return '';
         }
     }
 
     return (
-        <a href={buildURL(props.mode)} target="_blank" className="option-card">
+        <a href={buildURL(props.mode)} className="option-card">
 
             <img src={props.logo} height={"70px"} width={"100px"}></img>
             <div className="option-text">
                 ${props.price}{(props.mode === "uber" || props.mode === "lyft") ? "*" : ""}
             </div>
             <i class="material-icons">
-                chevron_right
-              </i>
+                {props.mode === 'taxi' ? 'phone' : 'launch'}
+            </i>
 
         </a >
     );

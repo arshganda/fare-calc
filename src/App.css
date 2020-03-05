@@ -21,7 +21,7 @@
 }
 
 .main-img {
-  height: 45%;
+  min-height: 45%;
   width: 80%;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -107,7 +107,7 @@
 }
 
 .second-img {
-  height: 60%;
+  min-height: 60%;
   width: 80%;
 }
 
@@ -130,11 +130,11 @@
 
 @media only screen and (min-height: 668px) {
   .main-img {
-    height: 50%;
+    min-height: 50%;
   }
 
   .second-img {
-    height: 65%;
+    min-height: 65%;
   }
 
   .search-container {
