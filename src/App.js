@@ -1,17 +1,15 @@
 import React from 'react';
 import ReactGA from "react-ga";
 import './App.css';
-import LocationSearchInput from './LocationSearchInput.js';
-import OptionCard from './OptionCard.js';
-import {
-  geocodeByAddress,
-  getLatLng,
-} from 'react-places-autocomplete';
-import uber from './Uber_Logo_Black_RGB.svg';
-import lyft from './Lyft_logo.svg';
-import taxi from './taxi.svg';
-import orderACar from './undraw_order_a_car_3tww.svg';
-import comingHome from './undraw_coming_home_52ir.svg';
+import LocationSearchInput from './components/LocationSearchInput.js';
+import IconLabel from './components/IconLabel.js';
+import OptionCard from './components/OptionCard.js';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import uber from './assets/images/Uber_Logo_Black_RGB.svg';
+import lyft from './assets/images/Lyft_logo.svg';
+import taxi from './assets/images/taxi.svg';
+import orderACar from './assets/images/undraw_order_a_car_3tww.svg';
+import comingHome from './assets/images/undraw_coming_home_52ir.svg';
 import { Link, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
 
 class App extends React.Component {
@@ -40,7 +38,7 @@ class App extends React.Component {
     this.setState({ origin });
   }
 
-  updateOrigin = origin => {
+  updateOrigin = async origin => {
     ReactGA.event({
       category: "Search",
       action: "Selected pick up location",
@@ -51,10 +49,9 @@ class App extends React.Component {
       .then(({ lat, lng }) => {
         console.log(lat + "  " + lng);
         this.setState({ originLat: lat, originLong: lng });
-      }
-      );
-    this.setState({ origin });
+      });
     this.ref1.current.blur();
+    this.setState({ origin });
   };
 
   handleDestinationChange = destination => {
@@ -81,8 +78,7 @@ class App extends React.Component {
       .then(({ lat, lng }) => {
         console.log(lat + "  " + lng);
         this.setState({ destLat: lat, destLng: lng });
-      }
-      );
+      });
     service.getDistanceMatrix({
       origins: [this.state.origin],
       destinations: [destination],
@@ -155,10 +151,32 @@ class App extends React.Component {
   }
 
   swapAddresses = () => {
-    this.setState({
-      origin: this.state.destination,
-    });
-    this.doThis(this.state.origin);
+    let service = new window.google.maps.DistanceMatrixService();
+    // geocodeByAddress(destination)
+    //   .then(results => getLatLng(results[0]))
+    //   .then(({ lat, lng }) => {
+    //     console.log(lat + "  " + lng);
+    //     this.setState({ destLat: lat, destLng: lng });
+    //   }
+    //   );
+    service.getDistanceMatrix({
+      origins: [this.state.destination],
+      destinations: [this.state.origin],
+      travelMode: 'DRIVING',
+      drivingOptions: {
+        departureTime: new Date(Date.now()),  // for the time N milliseconds from now.
+        trafficModel: 'bestguess'
+      }
+    }, function (response, status) {
+      // Assuming response structure doesn't change
+      let distance = response.rows[0].elements[0].distance['text'];
+      let distanceMeters = response.rows[0].elements[0].distance['value'];
+      let duration = response.rows[0].elements[0].duration_in_traffic['text'];
+      let durationSecs = response.rows[0].elements[0].duration_in_traffic['value'];
+      let showOptions = true;
+      this.setState({ distance, distanceMeters, duration, durationSecs, showOptions });
+    }.bind(this));
+    this.setState({ destination: this.state.origin, origin: this.state.destination });
   }
 
   render() {
@@ -175,8 +193,8 @@ class App extends React.Component {
           <Element name="search" id="search">
             <span className="where-to" id="where">Where to?</span>
           </Element>
-          <div style={{ 'display': 'flex', 'width': '90%' }}>
-            <div style={{ 'display': 'flex', 'flex-direction': 'column', 'max-width': '90%', 'min-width': '90%' }}>
+          <div className="search-inputs">
+            <div className="search-input-col">
               <LocationSearchInput
                 value={this.state.origin}
                 reference={this.ref1}
@@ -201,38 +219,34 @@ class App extends React.Component {
             </i>
           </div>
           <div className="dist-time">
-            <div className="dist">
-              <i class="material-icons">
-                directions_car
-              </i>
-              <div className="dist-text">
-                <span className="label-header">DISTANCE</span>
-                <span>{this.state.distance}</span>
-              </div>
-
-            </div>
-            <div className="dist">
-              <i class="material-icons">
-                timer
-              </i>
-              <div className="dist-text">
-                <span className="label-header">DURATION</span>
-                <span>{this.state.duration}</span>
-              </div>
-            </div>
+            <IconLabel
+              icon="directions_car"
+              label="DISTANCE"
+              value={this.state.distance}
+            />
+            <IconLabel
+              icon="timer"
+              label="DURATION"
+              value={this.state.duration}
+            />
           </div>
         </div>
-
-
 
         <div className={this.state.showOptions ? "options-container" : "options-container hidden"}>
           <div className="options-title">
             Request a Ride
           </div>
           <OptionCard
+            pickupAddress={this.state.origin}
+            dropoffAddress={this.state.destination}
+            pickupLat={this.state.originLat}
+            pickupLong={this.state.originLong}
+            dropoffLat={this.state.destLat}
+            dropoffLong={this.state.destLng}
             logo={uber}
             mode="uber"
-            price={this.calculatePrice("uber", this.state.distanceMeters, this.state.durationSecs)} />
+            price={this.calculatePrice("uber", this.state.distanceMeters, this.state.durationSecs)}
+          />
           <OptionCard
             logo={lyft}
             mode="lyft"

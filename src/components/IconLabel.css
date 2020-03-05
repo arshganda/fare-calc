@@ -1,0 +1,18 @@
+.dist {
+  display: inline-flex;
+}
+
+.label-header {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #c5c5c5;
+  font-family: 'Circular Std Book';
+}
+
+.dist-text {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.4;
+  padding-left: 8px;
+}

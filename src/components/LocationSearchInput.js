@@ -1,4 +1,5 @@
 import React from 'react';
+import './LocationSearchInput.css';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import SearchResultItem from './SearchResultItem';
 
