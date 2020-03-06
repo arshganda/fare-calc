@@ -130,15 +130,12 @@ class App extends React.Component {
       case 'uber':
         price = distance / 1000 * uber.kilometer + duration / 60 * uber.minute + uber.initial + uber.service;
         return price > uber.minFare ? price.toFixed(2) : uber.minFare.toFixed(2);
-        break;
       case 'lyft':
         price = distance / 1000 * lyft.kilometer + duration / 60 * lyft.minute + lyft.initial + lyft.service;
         return price > lyft.minFare ? price.toFixed(2) : lyft.minFare.toFixed(2);
-        break;
       case 'taxi':
         price = taxi.flag + distance / 1000 * taxi.kilometer + duration / 60 * .15 * taxi.minute
         return price.toFixed(2);
-        break;
     }
   }
 
