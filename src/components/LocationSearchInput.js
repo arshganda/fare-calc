@@ -5,10 +5,6 @@ import SearchResultItem from './SearchResultItem';
 
 const LocationSearchInput = (props) => {
 
-    const onBlur = () => {
-        console.log("YEET");
-    }
-
     const searchOptions = {
         bounds: new window.google.maps.LatLngBounds(
             new window.google.maps.LatLng(48, -129),
@@ -33,7 +29,6 @@ const LocationSearchInput = (props) => {
                             placeholder: props.placeholderText,
                             ref: props.reference,
                             onFocus: props.onFocus,
-                            onBlur: onBlur,
                             className: 'location-search-input',
                         })}
                     />

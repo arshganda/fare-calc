@@ -10,7 +10,7 @@ import lyft from './assets/images/Lyft_logo.svg';
 import taxi from './assets/images/taxi.svg';
 import orderACar from './assets/images/undraw_order_a_car_3tww.svg';
 import comingHome from './assets/images/undraw_coming_home_52ir.svg';
-import { Link, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
+import { Element } from 'react-scroll';
 
 class App extends React.Component {
 
@@ -47,7 +47,6 @@ class App extends React.Component {
     geocodeByAddress(origin)
       .then(results => getLatLng(results[0]))
       .then(({ lat, lng }) => {
-        console.log(lat + "  " + lng);
         this.setState({ originLat: lat, originLong: lng });
       });
     this.ref1.current.blur();
@@ -68,7 +67,6 @@ class App extends React.Component {
     geocodeByAddress(destination)
       .then(results => getLatLng(results[0]))
       .then(({ lat, lng }) => {
-        console.log(lat + "  " + lng);
         this.setState({ destLat: lat, destLng: lng });
       });
     this.ref2.current.blur();
@@ -136,6 +134,9 @@ class App extends React.Component {
       case 'taxi':
         price = taxi.flag + distance / 1000 * taxi.kilometer + duration / 60 * .15 * taxi.minute
         return price.toFixed(2);
+      default:
+        let x = 0;
+        return x.toFixed(2);
     }
   }
 
@@ -210,7 +211,7 @@ class App extends React.Component {
           <span id="title">FareCompare</span>
           <span id="sub">Price estimates of transit options in British Columbia</span>
         </div>
-        <img src={orderACar} className="main-img"></img>
+        <img src={orderACar} className="main-img" alt=""></img>
 
         <div className="search-container">
           <Element name="search" id="search">
@@ -287,7 +288,7 @@ class App extends React.Component {
           </span>
         </div>
 
-        <img src={comingHome} className={this.state.showOptions ? "second-img hidden" : "second-img"} />
+        <img src={comingHome} className={this.state.showOptions ? "second-img hidden" : "second-img"} alt="" />
 
       </div >
     );
