@@ -25,6 +25,7 @@ class App extends React.Component {
       duration: '-',
       durationSecs: '',
       distanceMeters: '',
+      myLocation: '',
       showOptions: false,
     }
   }
@@ -50,7 +51,7 @@ class App extends React.Component {
         this.setState({ originLat: lat, originLong: lng });
       });
     this.ref1.current.blur();
-    if (this.state.destination !== '') this.getDistTimeReg(origin);
+    if (this.state.destination !== '') this.getDistanceMatrix(origin, '');
     this.setState({ origin });
   };
 
@@ -70,17 +71,20 @@ class App extends React.Component {
         this.setState({ destLat: lat, destLng: lng });
       });
     this.ref2.current.blur();
-    if (this.state.origin !== '') this.doThis(destination);
+    if (this.state.origin !== '') this.getDistanceMatrix('', destination);
     this.setState({ destination });
   };
 
 
-  doThis = async (destination) => {
+  getDistanceMatrix = async (origin, destination) => {
     let service = new window.google.maps.DistanceMatrixService();
-
+    if (origin === '' && this.state.origin !== 'My Location') origin = this.state.origin;
+    if (destination === '') destination = this.state.destination;
+    if (origin === 'My Location') origin = this.state.myLocation;
+    if (destination === 'My Location') destination = this.state.myLocation;
     service.getDistanceMatrix({
-      origins: [this.state.origin],
-      destinations: [destination],
+      origins: [origin], //origin
+      destinations: [destination], //destination
       travelMode: 'DRIVING',
       drivingOptions: {
         departureTime: new Date(Date.now()),  // for the time N milliseconds from now.
@@ -94,6 +98,31 @@ class App extends React.Component {
       let showOptions = true;
       this.setState({ distance, distanceMeters, duration, durationSecs, showOptions });
     }.bind(this));
+  }
+
+  handleCompassClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((result) => {
+        let service = new window.google.maps.Geocoder();
+        let lat = result.coords.latitude;
+        let lng = result.coords.longitude;
+
+        service.geocode({
+          location: new window.google.maps.LatLng({ lat, lng })
+        }, (result, status) => {
+          let myLocation = result[0].formatted_address;
+          if (myLocation !== '') {
+            this.setState({ myLocation });
+          }
+        });
+
+        this.setState({
+          originLat: lat,
+          originLong: lng,
+          origin: 'My Location'
+        });
+      });
+    }
   }
 
   calculatePrice = (mode, distance, duration) => {
@@ -140,17 +169,9 @@ class App extends React.Component {
     }
   }
 
-  handleScroll = () => {
-    // scroller.scrollTo('search', {
-    //   duration: 500,
-    //   delay: 25,
-    //   smooth: true,
-    //   offset: -16, // Scrolls to element + 50 pixels down the page
-    // });
-  }
-
+  // Errors if 1 address but not big deal
   swapAddresses = () => {
-    this.getDistTimeSwap();
+    this.getDistanceMatrix(this.state.destination, this.state.origin);
     this.setState({
       destination: this.state.origin,
       origin: this.state.destination,
@@ -159,48 +180,6 @@ class App extends React.Component {
       destLat: this.state.originLat,
       destLng: this.state.originLong
     });
-  }
-
-  getDistTimeSwap = () => {
-    let service = new window.google.maps.DistanceMatrixService();
-    service.getDistanceMatrix({
-      origins: [this.state.destination],
-      destinations: [this.state.origin],
-      travelMode: 'DRIVING',
-      drivingOptions: {
-        departureTime: new Date(Date.now()),  // for the time N milliseconds from now.
-        trafficModel: 'bestguess'
-      }
-    }, function (response, status) {
-      // Assuming response structure doesn't change
-      let distance = response.rows[0].elements[0].distance['text'];
-      let distanceMeters = response.rows[0].elements[0].distance['value'];
-      let duration = response.rows[0].elements[0].duration_in_traffic['text'];
-      let durationSecs = response.rows[0].elements[0].duration_in_traffic['value'];
-      let showOptions = true;
-      this.setState({ distance, distanceMeters, duration, durationSecs, showOptions });
-    }.bind(this));
-  }
-
-  getDistTimeReg = (origin) => {
-    let service = new window.google.maps.DistanceMatrixService();
-    service.getDistanceMatrix({
-      origins: [origin],
-      destinations: [this.state.destination],
-      travelMode: 'DRIVING',
-      drivingOptions: {
-        departureTime: new Date(Date.now()),  // for the time N milliseconds from now.
-        trafficModel: 'bestguess'
-      }
-    }, function (response, status) {
-      // Assuming response structure doesn't change
-      let distance = response.rows[0].elements[0].distance['text'];
-      let distanceMeters = response.rows[0].elements[0].distance['value'];
-      let duration = response.rows[0].elements[0].duration_in_traffic['text'];
-      let durationSecs = response.rows[0].elements[0].duration_in_traffic['value'];
-      let showOptions = true;
-      this.setState({ distance, distanceMeters, duration, durationSecs, showOptions });
-    }.bind(this));
   }
 
   render() {
@@ -221,12 +200,14 @@ class App extends React.Component {
             <div className="search-input-col">
               <LocationSearchInput
                 value={this.state.origin}
+                showCompass={true}
                 reference={this.ref1}
                 className="from"
                 placeholderText="Pick Up"
                 handleChange={this.handleOriginChange}
                 handleSelect={this.updateOrigin.bind(this)}
                 onFocus={this.handleScroll}
+                handleCompassClick={this.handleCompassClick}
               />
               <LocationSearchInput
                 value={this.state.destination}

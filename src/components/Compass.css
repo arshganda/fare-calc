@@ -1,0 +1,12 @@
+.compass {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: white;
+    padding-left: 8px;
+}
+
+.compass i {
+    font-size: 24px;   
+}
+

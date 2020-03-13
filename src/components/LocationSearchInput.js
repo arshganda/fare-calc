@@ -2,6 +2,7 @@ import React from 'react';
 import './LocationSearchInput.css';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import SearchResultItem from './SearchResultItem';
+import Compass from './Compass';
 
 const LocationSearchInput = (props) => {
 
@@ -32,6 +33,8 @@ const LocationSearchInput = (props) => {
                             className: 'location-search-input',
                         })}
                     />
+                    {props.showCompass &&
+                        <Compass onClick={props.handleCompassClick} />}
                     {suggestions.map(suggestion => {
                         return (
                             <div
@@ -42,6 +45,8 @@ const LocationSearchInput = (props) => {
                             </div>
                         );
                     })}
+
+
                 </div>
             )}
         </PlacesAutocomplete>

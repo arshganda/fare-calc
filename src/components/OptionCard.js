@@ -25,7 +25,7 @@ const OptionCard = (props) => {
     }
 
     return (
-        <a href={buildURL(props.mode)} className="option-card">
+        <a href={buildURL(props.mode)} target="_blank" rel="noopener noreferrer" className="option-card">
 
             <img src={props.logo} height={"70px"} width={"100px"} alt={props.mode + " logo"}></img>
             <div className="option-text">
