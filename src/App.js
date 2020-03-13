@@ -78,7 +78,7 @@ class App extends React.Component {
 
   getDistanceMatrix = async (origin, destination) => {
     let service = new window.google.maps.DistanceMatrixService();
-    if (origin === '' && this.state.origin !== 'My Location') origin = this.state.origin;
+    if (origin === '') origin = this.state.origin;
     if (destination === '') destination = this.state.destination;
     if (origin === 'My Location') origin = this.state.myLocation;
     if (destination === 'My Location') destination = this.state.myLocation;
