@@ -73,6 +73,7 @@
 
 #swap {
   font-size: 24px;
+  cursor: pointer;
 }
 
 .dist-time {
